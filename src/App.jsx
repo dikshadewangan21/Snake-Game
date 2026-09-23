@@ -8,6 +8,7 @@ import { MainMenu } from './components/MainMenu';
 import { PauseMenu } from './components/PauseMenu';
 import { GameOver } from './components/GameOver';
 import { Settings } from './components/Settings';
+import { CustomizeModal } from './components/CustomizeModal';
 import { AchievementsModal } from './components/AchievementsModal';
 import { MissionsModal } from './components/MissionsModal';
 import { HowToPlayModal } from './components/HowToPlayModal';
@@ -26,6 +27,7 @@ import './styles/Controls.css';
 export function App() {
   const [settings, setSettings] = useState(getStoredSettings);
   const [showSettings, setShowSettings] = useState(false);
+  const [showCustomize, setShowCustomize] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [showMissions, setShowMissions] = useState(false);
   const [showHowToPlay, setShowHowToPlay] = useState(false);
@@ -57,6 +59,7 @@ export function App() {
     toastAchievement,
     isNewHigh,
     unlockedAchievements,
+    scorePopups,
     startGame,
     togglePause,
     onCountdownComplete
@@ -64,14 +67,13 @@ export function App() {
 
   const { onTouchStart, onTouchEnd } = useSwipe(changeDirection);
 
-  // Apply theme — always use the "natural green" base, themes just add accent tweaks
+  // Dynamically apply selected theme to root HTML element
   useEffect(() => {
-    // We removed the dark neon/candy override for this redesign —
-    // keep data-theme attribute cleared so :root green theme applies
-    document.documentElement.removeAttribute('data-theme');
+    const activeTheme = settings.theme || 'fresh-garden';
+    document.documentElement.setAttribute('data-theme', activeTheme);
   }, [settings.theme]);
 
-  // Sync audio
+  // Sync audio settings
   useEffect(() => {
     soundManager.setSfxEnabled(settings.sfxEnabled);
     soundManager.setMusicEnabled(settings.musicEnabled);
@@ -94,7 +96,7 @@ export function App() {
 
   return (
     <div className="app-container">
-      {/* Subtle ambient glows */}
+      {/* Subtle ambient background glow blobs */}
       <div className="ambient-glow ambient-glow-1" />
       <div className="ambient-glow ambient-glow-2" />
 
@@ -102,7 +104,7 @@ export function App() {
       {currentToast && (
         <div className="achievement-toast">
           <span className="toast-icon">{currentToast.icon}</span>
-          <div>
+          <div className="toast-content">
             <div className="toast-title">Achievement Unlocked!</div>
             <div className="toast-desc">{currentToast.title}</div>
           </div>
@@ -118,12 +120,13 @@ export function App() {
           highScores={highScores}
           onOpenAchievements={() => setShowAchievements(true)}
           onOpenMissions={() => setShowMissions(true)}
+          onOpenCustomize={() => setShowCustomize(true)}
           onOpenSettings={() => setShowSettings(true)}
           onOpenHowToPlay={() => setShowHowToPlay(true)}
         />
       )}
 
-      {/* Game View */}
+      {/* Game View (Countdown, Playing, Paused, GameOver) */}
       {(gameState === 'COUNTDOWN' ||
         gameState === 'PLAYING' ||
         gameState === 'PAUSED' ||
@@ -156,6 +159,8 @@ export function App() {
               levelUpNotice={levelUpNotice}
               level={level}
               burstEffect={burstEffect}
+              scorePopups={scorePopups}
+              skinId={settings.skin || 'classic'}
               onTouchStart={onTouchStart}
               onTouchEnd={onTouchEnd}
             />
@@ -168,7 +173,7 @@ export function App() {
         </div>
       )}
 
-      {/* Pause */}
+      {/* Pause Menu */}
       {gameState === 'PAUSED' && (
         <PauseMenu
           onResume={togglePause}
@@ -178,7 +183,7 @@ export function App() {
         />
       )}
 
-      {/* Game Over */}
+      {/* Game Over Modal */}
       {gameState === 'GAMEOVER' && (
         <GameOver
           score={score}
@@ -194,6 +199,16 @@ export function App() {
         />
       )}
 
+      {/* Customize Modal (Themes & Snake Skins) */}
+      {showCustomize && (
+        <CustomizeModal
+          settings={settings}
+          onUpdateSettings={updateSettings}
+          onClose={() => setShowCustomize(false)}
+        />
+      )}
+
+      {/* Settings Modal */}
       {showSettings && (
         <Settings
           settings={settings}
@@ -203,6 +218,7 @@ export function App() {
         />
       )}
 
+      {/* Achievements Modal */}
       {showAchievements && (
         <AchievementsModal
           unlockedIds={unlockedAchievements}
@@ -210,6 +226,7 @@ export function App() {
         />
       )}
 
+      {/* Missions Modal */}
       {showMissions && (
         <MissionsModal
           currentStats={{
@@ -223,6 +240,7 @@ export function App() {
         />
       )}
 
+      {/* Guide / How to Play Modal */}
       {showHowToPlay && (
         <HowToPlayModal onClose={() => setShowHowToPlay(false)} />
       )}

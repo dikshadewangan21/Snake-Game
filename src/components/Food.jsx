@@ -6,6 +6,7 @@ export const Food = ({ food }) => {
 
   const config = FOOD_TYPES[food.type] || FOOD_TYPES.NORMAL;
   const isNormal = food.type === 'NORMAL';
+  const isGolden = food.type === 'GOLDEN';
   const isRainbow = food.type === 'RAINBOW';
 
   return (
@@ -17,15 +18,18 @@ export const Food = ({ food }) => {
       }}
     >
       {isNormal ? (
-        /* Red CSS apple for the classic food */
+        /* Bright red CSS apple */
         <div className="food-apple" />
-      ) : (
-        /* Emoji + glow for special foods */
+      ) : isGolden ? (
+        /* Golden apple with glow */
         <>
-          <div
-            className="food-glow-circle"
-            style={{ background: config.color }}
-          />
+          <div className="food-glow-circle" style={{ background: '#fbbf24' }} />
+          <span className="food-emoji" style={{ filter: 'drop-shadow(0 0 6px #fbbf24)' }}>🍎</span>
+        </>
+      ) : (
+        /* Special foods with matching glow */
+        <>
+          <div className="food-glow-circle" style={{ background: config.color }} />
           <span className="food-emoji">{config.icon}</span>
         </>
       )}

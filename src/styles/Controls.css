@@ -1,4 +1,8 @@
-/* ── Controls Wrapper ────────────────────────────────── */
+/* ============================================================
+   Controls.css — D-Pad & Keyboard Hints for Mobile/Desktop
+   ============================================================ */
+
+/* ── Controls Wrapper ─────────────────────────────────────── */
 .controls-container {
   display: flex;
   flex-direction: column;
@@ -8,101 +12,159 @@
   padding-bottom: 4px;
 }
 
-/* ── Keyboard Hints (desktop) ────────────────────────── */
+/* ── Keyboard Hints (shown on desktop, hidden on mobile) ───── */
 .keyboard-hints {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
   flex-wrap: wrap;
+  font-family: var(--font-main);
   font-size: 11px;
   font-weight: 700;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.68);
+  user-select: none;
 }
 
+.keyboard-hint-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Individual key cap */
 .kbd {
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 5px;
-  padding: 2px 7px;
-  font-family: var(--font-main);
-  font-size: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: 10px;
   font-weight: 800;
-  color: rgba(255,255,255,0.9);
-  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.15) inset;
+  letter-spacing: 0;
 }
 
-/* ── Virtual D-Pad ───────────────────────────────────── */
+/* ── D-Pad Grid ───────────────────────────────────────────── */
 .dpad-container {
   display: grid;
-  grid-template-areas:
-    ". up ."
-    "left center right"
-    ". down .";
-  grid-template-columns: repeat(3, 60px);
-  grid-template-rows: repeat(3, 60px);
+  grid-template-columns: repeat(3, 62px);
+  grid-template-rows: repeat(3, 62px);
   gap: 7px;
 }
 
+/* ── D-Pad Button Base ────────────────────────────────────── */
 .dpad-btn {
-  background: #fff;
-  border: 2px solid var(--green-light);
-  border-radius: 16px;
+  width: 62px;
+  height: 62px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--green-deep);
-  font-size: 22px;
-  box-shadow: 0 4px 14px rgba(30, 92, 50, 0.2), 0 1px 0 rgba(255,255,255,0.8) inset;
+  background: var(--panel-bg);
+  border: 2px solid var(--panel-border);
+  border-radius: 16px;
+  color: var(--text-primary);
+  font-size: 24px;
   touch-action: manipulation;
-  cursor: pointer;
-  transition: all 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.22),
+    0 0 10px 0 color-mix(in srgb, var(--accent) 15%, transparent);
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease,
+    color 0.12s ease,
+    transform 0.1s ease,
+    box-shadow 0.12s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .dpad-btn:hover {
-  background: var(--green-pale);
-  border-color: var(--green-mid);
+  background: color-mix(in srgb, var(--accent) 18%, var(--panel-bg));
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
 .dpad-btn:active {
-  background: var(--green-bright);
-  border-color: var(--green-dark);
+  background: var(--accent);
+  border-color: var(--accent);
   color: #fff;
-  transform: scale(0.91);
-  box-shadow: 0 1px 6px rgba(30, 92, 50, 0.3);
+  transform: scale(0.88);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 14px 2px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
-.dpad-up    { grid-area: up; }
-.dpad-down  { grid-area: down; }
-.dpad-left  { grid-area: left; }
-.dpad-right { grid-area: right; }
+/* ── D-Pad Grid Placement ─────────────────────────────────── */
+.dpad-up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.dpad-left {
+  grid-column: 1;
+  grid-row: 2;
+}
 
 .dpad-center {
-  grid-area: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 10px;
-  color: rgba(255,255,255,0.6);
-  border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  border: 1.5px dashed rgba(255,255,255,0.3);
+  grid-column: 2;
+  grid-row: 2;
+  /* Center cell: non-interactive indicator */
+  cursor: default;
+  font-size: 12px;
+  font-family: var(--font-main);
+  font-weight: 700;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--text-primary) 4%, transparent);
+  border-color: color-mix(in srgb, var(--panel-border) 60%, transparent);
+  pointer-events: none;
+  opacity: 0.6;
 }
 
-/* Show D-pad always on narrow screens, hide on wide */
+.dpad-center:active {
+  transform: none;
+  background: color-mix(in srgb, var(--text-primary) 4%, transparent);
+  border-color: color-mix(in srgb, var(--panel-border) 60%, transparent);
+  color: var(--text-muted);
+}
+
+.dpad-right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.dpad-down {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+/* ── Responsive: hide d-pad on large screens ──────────────── */
 @media (min-width: 820px) {
   .dpad-container {
     display: none;
   }
 }
 
-/* Make D-pad bigger on very narrow phones */
+/* ── Responsive: smaller d-pad on very small screens ─────── */
 @media (max-width: 360px) {
   .dpad-container {
     grid-template-columns: repeat(3, 54px);
     grid-template-rows: repeat(3, 54px);
-    gap: 6px;
+    gap: 5px;
   }
-  .dpad-btn { font-size: 20px; border-radius: 13px; }
+
+  .dpad-btn {
+    width: 54px;
+    height: 54px;
+    font-size: 20px;
+    border-radius: 13px;
+  }
 }

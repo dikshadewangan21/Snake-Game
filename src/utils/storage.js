@@ -8,7 +8,8 @@ const STORAGE_KEYS = {
 };
 
 const DEFAULT_SETTINGS = {
-  theme: 'neon', // 'neon' | 'candy'
+  theme: 'fresh-garden',
+  skin: 'classic',
   sfxEnabled: true,
   musicEnabled: false,
   volume: 0.7,

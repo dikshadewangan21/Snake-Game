@@ -1,17 +1,26 @@
-/* ── Game HUD Panel ───────────────────────────────────── */
+/* ============================================================
+   HUD.css — Heads-Up Display: Score, Level, Timer, Combo, Buffs
+   ============================================================ */
+
+/* ── HUD Wrapper ──────────────────────────────────────────── */
 .game-hud {
   width: min(92vw, 460px);
-  background: var(--card-bg);
-  border: 2px solid var(--card-border);
+  background: var(--hud-bg);
+  border: var(--hud-border);
   border-radius: 18px;
   padding: 10px 14px 8px;
   display: flex;
   flex-direction: column;
   gap: 7px;
-  box-shadow: var(--card-shadow);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.22),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  flex-shrink: 0;
 }
 
-/* ── Top Row: Score / High / Timer / Level / Pause ──── */
+/* ── Top Row ──────────────────────────────────────────────── */
 .hud-top-row {
   display: flex;
   justify-content: space-between;
@@ -19,165 +28,233 @@
   gap: 6px;
 }
 
+/* ── Stats Group (left) ───────────────────────────────────── */
 .hud-stats-group {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex: 1;
+  min-width: 0;
 }
 
+/* Individual stat box */
 .hud-stat-box {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 0px;
+  min-width: 0;
 }
 
 .hud-stat-label {
-  font-size: 9px;
-  font-weight: 800;
-  text-transform: uppercase;
+  font-family: var(--font-main);
+  font-size: 10px;
+  font-weight: 700;
   color: var(--text-muted);
-  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
 }
 
 .hud-stat-val {
   font-family: var(--font-display);
   font-size: 18px;
-  color: var(--text-dark);
-  line-height: 1.1;
+  line-height: 1.15;
+  color: var(--text-primary);
+  white-space: nowrap;
 }
 
+/* Score accent colour */
 .hud-stat-val.score {
-  color: var(--green-deep);
+  color: var(--accent);
 }
 
+/* High score gold */
 .hud-stat-val.high {
-  color: var(--accent-gold);
+  color: #f0c040;
+  text-shadow: 0 0 8px rgba(240, 192, 64, 0.5);
 }
 
+/* Countdown danger pulse */
 .hud-stat-val.timer-danger {
-  color: var(--accent-red);
+  color: #ff3030;
   animation: pulseScale 0.7s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 48, 48, 0.6);
 }
 
-/* Level badge in center */
+/* ── Center Badge (level pill) ────────────────────────────── */
 .hud-center-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--green-bright);
-  color: #fff;
-  border-radius: 20px;
-  padding: 4px 12px;
-  box-shadow: 0 2px 8px rgba(46,139,71,0.35);
-}
-
-.hud-badge-title {
   font-family: var(--font-display);
   font-size: 14px;
+  background: var(--accent);
   color: #fff;
-  font-weight: 400;
+  padding: 4px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.22), 0 0 0 2px rgba(255, 255, 255, 0.12);
+  line-height: 1.4;
+  letter-spacing: 0.3px;
 }
 
-/* Icon action buttons (pause, sound) */
-.hud-actions-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
+/* ── Icon Buttons (pause / settings / etc.) ───────────────── */
 .hud-btn-icon {
-  background: var(--green-pale);
-  border: 1.5px solid var(--card-border);
-  color: var(--green-deep);
   width: 34px;
   height: 34px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 4px rgba(30,92,50,0.12);
+  font-size: 18px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--text-primary);
+  flex-shrink: 0;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+/* Darker theme icon btn */
+[data-theme='space'] .hud-btn-icon,
+[data-theme='ocean'] .hud-btn-icon,
+[data-theme='forest'] .hud-btn-icon,
+[data-theme='lava'] .hud-btn-icon {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
 }
 
 .hud-btn-icon:hover {
-  background: var(--green-light);
+  background: rgba(255, 255, 255, 0.28);
   transform: scale(1.08);
 }
 
 .hud-btn-icon:active {
-  transform: scale(0.93);
+  transform: scale(0.92);
 }
 
-/* ── Sub Row: Combo + Buffs ──────────────────────────── */
+/* ── Sub Row (combo + buffs) ──────────────────────────────── */
 .hud-sub-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 8px;
   min-height: 22px;
+  flex-wrap: wrap;
 }
 
+/* Combo container */
 .combo-container {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   flex: 1;
   min-width: 0;
 }
 
+/* Combo label pill */
 .combo-tag {
   font-family: var(--font-display);
   font-size: 12px;
-  color: var(--accent-orange);
+  color: var(--accent);
   white-space: nowrap;
-  font-weight: 400;
-}
-
-.combo-bar-wrap {
-  flex: 1;
-  height: 7px;
-  background: var(--green-pale);
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid var(--card-border);
-}
-
-.combo-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--green-bright), var(--accent-gold));
-  border-radius: 4px;
-  transition: width 0.1s linear;
-}
-
-/* Active Power-up buff pills */
-.active-buffs-list {
-  display: flex;
-  align-items: center;
-  gap: 5px;
   flex-shrink: 0;
 }
 
-.buff-pill {
+/* Combo bar track */
+.combo-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  min-width: 40px;
+}
+
+/* Combo bar fill */
+.combo-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
+  transition: width 0.2s ease;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Active Buff Pills ────────────────────────────────────── */
+.buff-pills-row {
   display: flex;
   align-items: center;
-  gap: 3px;
-  background: var(--green-ghost);
-  border: 1.5px solid var(--green-mid);
-  border-radius: 10px;
-  padding: 2px 6px;
-  font-size: 11px;
-  font-weight: 800;
-  animation: pulseScale 1.4s ease-in-out infinite;
+  gap: 4px;
+  flex-wrap: wrap;
 }
 
-.buff-timer {
-  font-family: var(--font-display);
+.buff-pill {
+  font-family: var(--font-main);
   font-size: 10px;
-  color: var(--green-deep);
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--text-primary);
+  white-space: nowrap;
+  animation: pulseScale 1.6s ease-in-out infinite;
+  line-height: 1.5;
 }
 
-/* ── Responsive HUD ──────────────────────────────────── */
-@media (max-width: 380px) {
-  .hud-stat-val { font-size: 15px; }
-  .hud-stats-group { gap: 7px; }
-  .hud-btn-icon { width: 30px; height: 30px; }
+.buff-pill.shield {
+  background: rgba(0, 220, 255, 0.18);
+  border-color: rgba(0, 220, 255, 0.45);
+  color: #00dcff;
+}
+
+.buff-pill.speed {
+  background: rgba(255, 200, 0, 0.18);
+  border-color: rgba(255, 200, 0, 0.45);
+  color: #ffc800;
+}
+
+.buff-pill.slow {
+  background: rgba(100, 200, 255, 0.18);
+  border-color: rgba(100, 200, 255, 0.45);
+  color: #64c8ff;
+}
+
+/* ── Responsive: ≤480px ───────────────────────────────────── */
+@media (max-width: 480px) {
+  .hud-top-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .hud-stats-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 4px 10px;
+    flex: 1;
+    width: 100%;
+  }
+
+  .hud-stat-val {
+    font-size: 15px;
+  }
+
+  .hud-stat-label {
+    font-size: 9px;
+  }
+
+  .hud-center-badge {
+    font-size: 12px;
+    padding: 3px 10px;
+  }
+
+  .hud-btn-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+
+  .game-hud {
+    padding: 8px 10px 6px;
+    gap: 5px;
+  }
 }

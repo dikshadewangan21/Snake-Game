@@ -14,6 +14,8 @@ export const GameBoard = ({
   levelUpNotice,
   level,
   burstEffect,
+  scorePopups = [],
+  skinId,
   onTouchStart,
   onTouchEnd
 }) => {
@@ -24,23 +26,20 @@ export const GameBoard = ({
       onTouchEnd={onTouchEnd}
     >
       {/* Obstacles (Survival Mode) */}
-      {obstacles &&
-        obstacles.map((obs, index) => (
-          <div
-            key={`obs-${index}`}
-            className="obstacle-item"
-            style={{
-              left: `${obs.x * 5}%`,
-              top: `${obs.y * 5}%`
-            }}
-          />
-        ))}
+      {obstacles && obstacles.map((obs, index) => (
+        <div
+          key={`obs-${index}`}
+          className="obstacle-item"
+          style={{ left: `${obs.x * 5}%`, top: `${obs.y * 5}%` }}
+        />
+      ))}
 
       {/* Snake */}
       <Snake
         segments={snake}
         direction={direction}
         hasShield={hasShield}
+        skinId={skinId}
       />
 
       {/* Food */}
@@ -49,10 +48,25 @@ export const GameBoard = ({
       {/* Power-up item */}
       <PowerUp powerUp={powerUp} />
 
+      {/* Floating Score Popups */}
+      {scorePopups.map((popup) => (
+        <div
+          key={popup.id}
+          className="score-popup"
+          style={{
+            left: `${popup.x * 5 + 1}%`,
+            top: `${popup.y * 5}%`,
+            color: popup.color || '#ffffff'
+          }}
+        >
+          {popup.value}
+        </div>
+      ))}
+
       {/* Level-Up Celebration Overlay */}
       {levelUpNotice && (
         <div className="level-up-overlay">
-          <div className="level-up-text">LEVEL UP!</div>
+          <div className="level-up-text">⭐ LEVEL UP!</div>
           <div className="level-up-sub">LEVEL {level}</div>
         </div>
       )}

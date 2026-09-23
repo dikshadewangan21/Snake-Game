@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Trophy, Target, Settings as SettingsIcon, HelpCircle } from 'lucide-react';
+import { Play, Trophy, Target, Settings as SettingsIcon, HelpCircle, Palette } from 'lucide-react';
 import { GAME_MODES } from '../utils/constants';
 import { soundManager } from '../utils/audio';
 
@@ -11,7 +11,8 @@ export const MainMenu = ({
   onOpenAchievements,
   onOpenMissions,
   onOpenSettings,
-  onOpenHowToPlay
+  onOpenHowToPlay,
+  onOpenCustomize
 }) => {
   const handleModeClick = (modeId) => {
     soundManager.playClick();
@@ -33,9 +34,9 @@ export const MainMenu = ({
       <div className="menu-container">
         {/* Header */}
         <div className="menu-header">
-          <span className="brand-badge">🌿 CLASSIC ARCADE</span>
-          <h1 className="game-title">🐍 Snake Game</h1>
-          <p className="game-subtitle">Eat • Grow • Survive</p>
+          <span className="brand-badge">🕹️ ARCADE GAME</span>
+          <h1 className="game-title">Snake Game</h1>
+          <p className="game-subtitle">Eat. Grow. Survive.</p>
         </div>
 
         {/* Mode Selection */}
@@ -60,7 +61,7 @@ export const MainMenu = ({
                   </div>
                   <p className="mode-desc">{gmode.tagline}</p>
                   {best > 0 && (
-                    <span className="mode-best-score">🏆 Best: {best}</span>
+                    <span className="mode-best-score">🏆 {best}</span>
                   )}
                 </div>
               );
@@ -69,49 +70,30 @@ export const MainMenu = ({
         </div>
 
         {/* Hero Play Button */}
-        <button
-          className="btn-play-hero"
-          onClick={handlePlayClick}
-          autoFocus
-        >
-          <Play size={22} fill="#fff" /> PLAY GAME
+        <button className="btn-play-hero" onClick={handlePlayClick} autoFocus>
+          <Play size={22} fill="currentColor" /> PLAY
         </button>
 
-        {/* Footer Navigation */}
+        {/* Footer Nav */}
         <div className="menu-footer-actions">
-          <button
-            className="btn-menu-icon"
-            onClick={() => handleNavClick(onOpenAchievements)}
-            title="Achievements"
-          >
-            <Trophy size={20} color="var(--accent-gold)" />
+          <button className="btn-menu-icon" onClick={() => handleNavClick(onOpenAchievements)}>
+            <Trophy size={20} />
             <span>Trophies</span>
           </button>
-
-          <button
-            className="btn-menu-icon"
-            onClick={() => handleNavClick(onOpenMissions)}
-            title="Missions"
-          >
-            <Target size={20} color="var(--green-dark)" />
+          <button className="btn-menu-icon" onClick={() => handleNavClick(onOpenMissions)}>
+            <Target size={20} />
             <span>Missions</span>
           </button>
-
-          <button
-            className="btn-menu-icon"
-            onClick={() => handleNavClick(onOpenHowToPlay)}
-            title="How to Play"
-          >
-            <HelpCircle size={20} color="var(--accent-orange)" />
+          <button className="btn-menu-icon" onClick={() => handleNavClick(onOpenCustomize)}>
+            <Palette size={20} />
+            <span>Customize</span>
+          </button>
+          <button className="btn-menu-icon" onClick={() => handleNavClick(onOpenHowToPlay)}>
+            <HelpCircle size={20} />
             <span>Guide</span>
           </button>
-
-          <button
-            className="btn-menu-icon"
-            onClick={() => handleNavClick(onOpenSettings)}
-            title="Settings"
-          >
-            <SettingsIcon size={20} color="var(--text-muted)" />
+          <button className="btn-menu-icon" onClick={() => handleNavClick(onOpenSettings)}>
+            <SettingsIcon size={20} />
             <span>Settings</span>
           </button>
         </div>

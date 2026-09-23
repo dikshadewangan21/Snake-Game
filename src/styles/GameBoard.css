@@ -1,100 +1,141 @@
-/* ── Game Board Container ─────────────────────────────── */
+/* ============================================================
+   GameBoard.css — Board, Snake, Food, Power-ups, Overlays
+   ============================================================ */
+
+/* ── Board Container ──────────────────────────────────────── */
 .game-board-container {
   position: relative;
   width: min(92vw, 460px);
   height: min(92vw, 460px);
   border-radius: 20px;
   border: 3px solid var(--board-border);
-  box-shadow: var(--board-shadow), inset 0 1px 0 rgba(255,255,255,0.1);
+  box-shadow: var(--board-shadow);
   overflow: hidden;
   touch-action: none;
-  /* Checkerboard grass grid */
-  background-image:
-    repeating-conic-gradient(var(--board-cell-a) 0% 25%, var(--board-cell-b) 0% 50%);
+  flex-shrink: 0;
+
+  /* Checkerboard via repeating-conic-gradient */
+  background-image: repeating-conic-gradient(
+    var(--board-cell-a) 0% 25%,
+    var(--board-cell-b) 0% 50%
+  );
   background-size: 5% 5%;
 }
 
-/* Thin grid lines overlay */
+/* Grid line overlay */
 .game-board-container::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(to right, var(--board-grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--board-grid) 1px, transparent 1px);
-  background-size: 5% 5%;
-  pointer-events: none;
   z-index: 5;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--board-grid, rgba(0, 0, 0, 0.06)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--board-grid, rgba(0, 0, 0, 0.06)) 1px, transparent 1px);
+  background-size: 5% 5%;
 }
 
-/* ── Snake Segments ──────────────────────────────────── */
+/* ── Snake Segment (shared) ───────────────────────────────── */
 .snake-segment {
   position: absolute;
   width: 5%;
   height: 5%;
   border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 20;
+  will-change: transform;
+  transition: left 0.06s linear, top 0.06s linear;
 }
 
+/* ── Snake Head ───────────────────────────────────────────── */
 .snake-head {
-  background: var(--snake-head);
-  box-shadow: var(--snake-head-shadow);
   z-index: 25;
   border-radius: 9px;
-  border: 1.5px solid rgba(255,255,255,0.15);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.35),
+    0 0 14px 2px var(--skin-glow, rgba(78, 202, 114, 0.5));
 }
 
-/* Head direction-aware eyes */
+.snake-head.has-shield {
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.35),
+    0 0 0 3px rgba(0, 220, 255, 0.7),
+    0 0 20px 6px rgba(0, 220, 255, 0.35),
+    0 0 14px 2px var(--skin-glow, rgba(78, 202, 114, 0.4));
+  animation: pulseScale 1.2s ease-in-out infinite;
+}
+
+/* Eyes container */
 .snake-head-eyes {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .snake-eye {
   position: absolute;
-  width: 5px;
-  height: 5px;
-  background: #ffffff;
+  width: 28%;
+  height: 28%;
+  background: #fff;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Pupil */
 .snake-eye::after {
   content: '';
   position: absolute;
-  width: 2.5px;
-  height: 2.5px;
+  width: 50%;
+  height: 50%;
   background: #111;
   border-radius: 50%;
-  top: 1px;
-  left: 1px;
 }
 
-/* Eye placement by direction */
-.head-up    .eye-left  { top: 2px; left: 3px; }
-.head-up    .eye-right { top: 2px; right: 3px; }
-.head-down  .eye-left  { bottom: 2px; left: 3px; }
-.head-down  .eye-right { bottom: 2px; right: 3px; }
-.head-left  .eye-left  { top: 3px; left: 2px; }
-.head-left  .eye-right { bottom: 3px; left: 2px; }
-.head-right .eye-left  { top: 3px; right: 2px; }
-.head-right .eye-right { bottom: 3px; right: 2px; }
-
-/* Shield aura */
-.snake-head.has-shield {
-  box-shadow: 0 0 0 3px #60d4f5, 0 0 16px rgba(96,212,245,0.7);
-  animation: pulseScale 1.2s ease-in-out infinite;
+/* ── Direction-based Eye Positioning ─────────────────────── */
+.head-right .snake-eye:first-child {
+  top: 14%;
+  right: 10%;
+}
+.head-right .snake-eye:last-child {
+  bottom: 14%;
+  right: 10%;
 }
 
+.head-left .snake-eye:first-child {
+  top: 14%;
+  left: 10%;
+}
+.head-left .snake-eye:last-child {
+  bottom: 14%;
+  left: 10%;
+}
+
+.head-up .snake-eye:first-child {
+  top: 10%;
+  left: 14%;
+}
+.head-up .snake-eye:last-child {
+  top: 10%;
+  right: 14%;
+}
+
+.head-down .snake-eye:first-child {
+  bottom: 10%;
+  left: 14%;
+}
+.head-down .snake-eye:last-child {
+  bottom: 10%;
+  right: 14%;
+}
+
+/* ── Snake Body ───────────────────────────────────────────── */
 .snake-body {
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* ── Food Items ──────────────────────────────────────── */
+/* ── Food Item (base) ─────────────────────────────────────── */
 .food-item {
   position: absolute;
   width: 5%;
@@ -104,30 +145,34 @@
   justify-content: center;
   z-index: 15;
   animation: floatBob 1.4s ease-in-out infinite;
+  will-change: transform;
 }
 
-/* The red apple visual rendered via CSS */
+/* Apple food */
 .food-apple {
   position: relative;
-  width: 78%;
-  height: 78%;
-  border-radius: 50% 50% 48% 48% / 55% 55% 45% 45%;
-  background: radial-gradient(circle at 35% 35%, #ff6060, var(--food-red) 55%, var(--food-red-dark) 100%);
-  box-shadow: 0 2px 8px var(--food-red-glow), inset -2px -2px 4px rgba(0,0,0,0.2);
+  width: 80%;
+  height: 80%;
+  border-radius: 50% 50% 48% 48%;
+  background: radial-gradient(circle at 38% 35%, #ff6b6b 0%, #e01020 55%, #aa0010 100%);
+  box-shadow: 0 2px 8px rgba(180, 0, 20, 0.45), inset 0 1px 2px rgba(255, 120, 120, 0.5);
 }
 
-/* Shine glint on apple */
+/* Apple shine */
 .food-apple::before {
   content: '';
   position: absolute;
   top: 10%;
   left: 18%;
   width: 28%;
-  height: 20%;
-  background: rgba(255,255,255,0.55);
+  height: 48%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
   border-radius: 50%;
-  transform: rotate(-30deg);
-  animation: appleShine 1.8s ease-in-out infinite;
+  animation: appleShine 2.4s ease-in-out infinite 0.6s;
 }
 
 /* Apple stem */
@@ -135,51 +180,33 @@
   content: '';
   position: absolute;
   top: -20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
+  left: 44%;
+  width: 10%;
   height: 28%;
-  background: #5a3010;
-  border-radius: 2px 2px 0 0;
+  background: #5a3a1a;
+  border-radius: 3px 3px 0 0;
+  transform: rotate(8deg);
 }
 
-/* Emoji-based fallback for special foods */
+/* Glow circle behind special food */
 .food-glow-circle {
   position: absolute;
-  width: 140%;
-  height: 140%;
+  inset: -10%;
   border-radius: 50%;
-  opacity: 0.5;
-  filter: blur(5px);
-  animation: pulseScale 1.2s ease-in-out infinite alternate;
-}
-
-.food-emoji {
-  font-size: 15px;
-  position: relative;
-  z-index: 2;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-}
-
-.food-rainbow {
-  animation: floatBob 1.4s ease-in-out infinite;
-  filter: hue-rotate(0deg);
-}
-
-/* Score popup (+10, +25 etc.) */
-.score-popup {
-  position: absolute;
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 900;
-  color: #fff;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: 0.35;
   pointer-events: none;
-  z-index: 40;
-  animation: scorePopup 0.7s ease-out forwards;
 }
 
-/* ── Power-Ups ───────────────────────────────────────── */
+/* Emoji/icon for special foods */
+.food-emoji {
+  font-size: calc(min(92vw, 460px) * 0.038);
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  user-select: none;
+}
+
+/* ── Power-up Item ────────────────────────────────────────── */
 .power-up-item {
   position: absolute;
   width: 5%;
@@ -187,34 +214,41 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
   z-index: 16;
-  animation: floatBob 0.9s ease-in-out infinite;
+  animation: floatBob 0.9s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
+/* Spinning halo ring around power-up */
 .powerup-halo {
   position: absolute;
-  inset: -4px;
+  inset: -30%;
   border-radius: 50%;
-  border: 1.5px dashed rgba(255,255,255,0.85);
-  animation: spin 2.5s linear infinite;
+  border: 2px dashed var(--accent);
+  opacity: 0.6;
+  animation: spin 2.8s linear infinite;
+  pointer-events: none;
 }
 
-/* ── Obstacles ───────────────────────────────────────── */
+/* ── Obstacle Item ────────────────────────────────────────── */
 .obstacle-item {
   position: absolute;
   width: 5%;
   height: 5%;
-  background: repeating-linear-gradient(
-    45deg, #6b2f0e, #6b2f0e 3px, #c04010 3px, #c04010 6px
+  border-radius: 5px;
+  z-index: 18;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #cc2200 0px,
+    #cc2200 4px,
+    #ff4422 4px,
+    #ff4422 8px
   );
-  border: 1.5px solid #8b3a12;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(139, 58, 18, 0.5);
-  z-index: 12;
+  box-shadow: 0 2px 8px rgba(180, 20, 0, 0.5), inset 0 0 0 1px rgba(255, 80, 40, 0.4);
+  border: 1px solid rgba(255, 60, 20, 0.6);
 }
 
-/* ── Level-Up Overlay ────────────────────────────────── */
+/* ── Level-up Overlay ─────────────────────────────────────── */
 .level-up-overlay {
   position: absolute;
   inset: 0;
@@ -222,30 +256,33 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(25, 80, 40, 0.6);
-  backdrop-filter: blur(4px);
-  z-index: 50;
-  pointer-events: none;
+  gap: 8px;
+  z-index: 40;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   animation: flashLevel 1.5s ease-out forwards;
+  pointer-events: none;
 }
 
 .level-up-text {
   font-family: var(--font-display);
-  font-size: 30px;
-  color: var(--accent-gold);
-  text-shadow: 0 2px 12px rgba(245, 166, 35, 0.7);
-  margin-bottom: 6px;
+  font-size: clamp(26px, 7vw, 38px);
+  color: #fff;
+  text-shadow:
+    0 0 20px var(--accent),
+    0 2px 8px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
 }
 
 .level-up-sub {
-  font-family: var(--font-display);
-  font-size: 16px;
-  color: #fff;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  font-family: var(--font-main);
+  font-size: clamp(13px, 3.5vw, 17px);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
 
-/* ── Particle Canvas ─────────────────────────────────── */
+/* ── Particle Canvas ──────────────────────────────────────── */
 .particle-canvas {
   position: absolute;
   inset: 0;
@@ -253,4 +290,20 @@
   height: 100%;
   pointer-events: none;
   z-index: 30;
+}
+
+/* ── Score Popup ──────────────────────────────────────────── */
+.score-popup {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: clamp(14px, 3.5vw, 20px);
+  color: #fff;
+  text-shadow:
+    0 0 10px var(--accent),
+    0 1px 4px rgba(0, 0, 0, 0.55);
+  pointer-events: none;
+  z-index: 35;
+  animation: scorePopup 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  white-space: nowrap;
+  transform-origin: center bottom;
 }

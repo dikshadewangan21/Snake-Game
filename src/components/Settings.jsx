@@ -1,13 +1,9 @@
 import React from 'react';
 import { X, RotateCcw } from 'lucide-react';
 import { soundManager } from '../utils/audio';
+import { THEMES } from '../utils/themes';
 
 export const Settings = ({ settings, onUpdateSettings, onClose, onResetData }) => {
-  const toggleTheme = (themeName) => {
-    soundManager.playClick();
-    onUpdateSettings({ theme: themeName });
-  };
-
   const toggleSfx = () => {
     soundManager.playClick();
     const next = !settings.sfxEnabled;
@@ -40,29 +36,7 @@ export const Settings = ({ settings, onUpdateSettings, onClose, onResetData }) =
         </div>
 
         <div className="settings-group">
-          {/* Theme */}
-          <div className="settings-row">
-            <div className="settings-label-wrap">
-              <span className="settings-title">🎨 Visual Theme</span>
-              <span className="settings-subtitle">Pick your colour style</span>
-            </div>
-            <div className="theme-options">
-              <button
-                className={`theme-pill ${settings.theme === 'neon' ? 'active' : ''}`}
-                onClick={() => toggleTheme('neon')}
-              >
-                ⚡ Neon
-              </button>
-              <button
-                className={`theme-pill ${settings.theme === 'candy' ? 'active' : ''}`}
-                onClick={() => toggleTheme('candy')}
-              >
-                🍬 Candy
-              </button>
-            </div>
-          </div>
-
-          {/* SFX */}
+          {/* Sound Effects */}
           <div className="settings-row">
             <div className="settings-label-wrap">
               <span className="settings-title">🔊 Sound Effects</span>
@@ -95,14 +69,14 @@ export const Settings = ({ settings, onUpdateSettings, onClose, onResetData }) =
           </div>
 
           {/* Reset */}
-          <div className="settings-row" style={{ marginTop: '4px' }}>
+          <div className="settings-row" style={{ marginTop: 4 }}>
             <div className="settings-label-wrap">
               <span className="settings-title">🗑️ Reset Progress</span>
               <span className="settings-subtitle">Clears all scores & data</span>
             </div>
             <button
               className="btn-secondary"
-              style={{ width: 'auto', padding: '6px 14px', fontSize: '12px', color: '#c0392b', borderColor: '#e07070' }}
+              style={{ width: 'auto', padding: '6px 14px', fontSize: '12px', color: '#dc2626', borderColor: '#fca5a5' }}
               onClick={handleReset}
             >
               <RotateCcw size={13} /> RESET
