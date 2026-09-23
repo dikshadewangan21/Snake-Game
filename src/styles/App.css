@@ -1,0 +1,90 @@
+/* ── App Container & Layout ──────────────────────────── */
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow-x: hidden;
+  padding: 0;
+}
+
+/* Decorative background grass blobs */
+.ambient-glow {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+}
+
+.ambient-glow-1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  left: -80px;
+  background: #6fcf97;
+}
+
+.ambient-glow-2 {
+  width: 450px;
+  height: 450px;
+  bottom: -120px;
+  right: -80px;
+  background: #219653;
+}
+
+/* ── Game Layout (active game) ──────────────────────── */
+.game-layout {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 8px 16px;
+}
+
+/* ── Achievement Toast ────────────────────────────────── */
+.achievement-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 2px solid var(--accent-gold);
+  box-shadow: 0 8px 30px rgba(245, 166, 35, 0.3);
+  padding: 10px 18px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+  animation: toastSlide 0.3s ease-out;
+  min-width: 260px;
+  max-width: 90vw;
+}
+
+.toast-icon {
+  font-size: 26px;
+}
+
+.toast-title {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--accent-gold);
+}
+
+.toast-desc {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dark);
+}

@@ -1,0 +1,183 @@
+/* ── Game HUD Panel ───────────────────────────────────── */
+.game-hud {
+  width: min(92vw, 460px);
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 18px;
+  padding: 10px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  box-shadow: var(--card-shadow);
+}
+
+/* ── Top Row: Score / High / Timer / Level / Pause ──── */
+.hud-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.hud-stats-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hud-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hud-stat-label {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.7px;
+}
+
+.hud-stat-val {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--text-dark);
+  line-height: 1.1;
+}
+
+.hud-stat-val.score {
+  color: var(--green-deep);
+}
+
+.hud-stat-val.high {
+  color: var(--accent-gold);
+}
+
+.hud-stat-val.timer-danger {
+  color: var(--accent-red);
+  animation: pulseScale 0.7s ease-in-out infinite;
+}
+
+/* Level badge in center */
+.hud-center-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--green-bright);
+  color: #fff;
+  border-radius: 20px;
+  padding: 4px 12px;
+  box-shadow: 0 2px 8px rgba(46,139,71,0.35);
+}
+
+.hud-badge-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: #fff;
+  font-weight: 400;
+}
+
+/* Icon action buttons (pause, sound) */
+.hud-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hud-btn-icon {
+  background: var(--green-pale);
+  border: 1.5px solid var(--card-border);
+  color: var(--green-deep);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(30,92,50,0.12);
+}
+
+.hud-btn-icon:hover {
+  background: var(--green-light);
+  transform: scale(1.08);
+}
+
+.hud-btn-icon:active {
+  transform: scale(0.93);
+}
+
+/* ── Sub Row: Combo + Buffs ──────────────────────────── */
+.hud-sub-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-height: 22px;
+}
+
+.combo-container {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+  min-width: 0;
+}
+
+.combo-tag {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--accent-orange);
+  white-space: nowrap;
+  font-weight: 400;
+}
+
+.combo-bar-wrap {
+  flex: 1;
+  height: 7px;
+  background: var(--green-pale);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+}
+
+.combo-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-bright), var(--accent-gold));
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
+
+/* Active Power-up buff pills */
+.active-buffs-list {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.buff-pill {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--green-ghost);
+  border: 1.5px solid var(--green-mid);
+  border-radius: 10px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 800;
+  animation: pulseScale 1.4s ease-in-out infinite;
+}
+
+.buff-timer {
+  font-family: var(--font-display);
+  font-size: 10px;
+  color: var(--green-deep);
+}
+
+/* ── Responsive HUD ──────────────────────────────────── */
+@media (max-width: 380px) {
+  .hud-stat-val { font-size: 15px; }
+  .hud-stats-group { gap: 7px; }
+  .hud-btn-icon { width: 30px; height: 30px; }
+}
