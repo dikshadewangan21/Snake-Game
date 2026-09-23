@@ -13,6 +13,7 @@ import { AchievementsModal } from './components/AchievementsModal';
 import { MissionsModal } from './components/MissionsModal';
 import { HowToPlayModal } from './components/HowToPlayModal';
 import { Countdown } from './components/Countdown';
+import { GameBackground } from './components/GameBackground';
 import { ACHIEVEMENTS } from './utils/constants';
 import { getStoredSettings, saveStoredSettings } from './utils/storage';
 import { soundManager } from './utils/audio';
@@ -96,9 +97,8 @@ export function App() {
 
   return (
     <div className="app-container">
-      {/* Subtle ambient background glow blobs */}
-      <div className="ambient-glow ambient-glow-1" />
-      <div className="ambient-glow ambient-glow-2" />
+      {/* Dynamic Animated Game Background */}
+      <GameBackground />
 
       {/* Achievement Toast */}
       {currentToast && (

@@ -18,7 +18,9 @@
 :root,
 [data-theme='fresh-garden'] {
   /* Background */
-  --app-bg: linear-gradient(145deg, #1a4a2e 0%, #2d7a4f 40%, #1e6640 100%);
+  --app-bg: radial-gradient(ellipse at 80% 20%, #2f8e56 0%, transparent 55%),
+            radial-gradient(circle at 15% 85%, #1b5b38 0%, transparent 50%),
+            linear-gradient(155deg, #134224 0%, #1e5a36 45%, #184c2d 100%);
 
   /* Board checkerboard */
   --board-cell-a: #3dac60;
@@ -60,7 +62,9 @@
    THEME: space
    ============================================================ */
 [data-theme='space'] {
-  --app-bg: linear-gradient(145deg, #0d0d2b 0%, #1a1a4e 60%, #0f0f3a 100%);
+  --app-bg: radial-gradient(ellipse at 80% 15%, #4c1d95 0%, transparent 55%),
+            radial-gradient(circle at 10% 85%, #0f3060 0%, transparent 50%),
+            linear-gradient(155deg, #09091e 0%, #12123a 50%, #08081a 100%);
   --board-cell-a: #0d1b3e;
   --board-cell-b: #0a1530;
   --board-border: #1e2d5a;
@@ -84,7 +88,9 @@
    THEME: sunset
    ============================================================ */
 [data-theme='sunset'] {
-  --app-bg: linear-gradient(145deg, #ff6b35 0%, #f7c59f 50%, #c44569 100%);
+  --app-bg: radial-gradient(ellipse at 85% 15%, #ff8c42 0%, transparent 58%),
+            radial-gradient(circle at 15% 85%, #d83a56 0%, transparent 52%),
+            linear-gradient(155deg, #ff5e36 0%, #ea5455 50%, #7b113a 100%);
   --board-cell-a: #c8813a;
   --board-cell-b: #b5722e;
   --board-border: #d4924a;
@@ -108,7 +114,9 @@
    THEME: candy
    ============================================================ */
 [data-theme='candy'] {
-  --app-bg: linear-gradient(145deg, #fce4ec 0%, #e1bee7 50%, #bbdefb 100%);
+  --app-bg: radial-gradient(ellipse at 80% 20%, #f48fb1 0%, transparent 55%),
+            radial-gradient(circle at 15% 85%, #80deea 0%, transparent 50%),
+            linear-gradient(155deg, #f8bbd0 0%, #e1bee7 50%, #bbdefb 100%);
   --board-cell-a: #f8bbd9;
   --board-cell-b: #f48fb1;
   --board-border: #f06292;
@@ -132,7 +140,9 @@
    THEME: ocean
    ============================================================ */
 [data-theme='ocean'] {
-  --app-bg: linear-gradient(145deg, #001a33 0%, #003366 50%, #006699 100%);
+  --app-bg: radial-gradient(ellipse at 85% 20%, #0077b6 0%, transparent 55%),
+            radial-gradient(circle at 15% 85%, #0096c7 0%, transparent 50%),
+            linear-gradient(155deg, #021226 0%, #002855 50%, #001220 100%);
   --board-cell-a: #004080;
   --board-cell-b: #003366;
   --board-border: #005599;
@@ -156,7 +166,9 @@
    THEME: forest
    ============================================================ */
 [data-theme='forest'] {
-  --app-bg: linear-gradient(145deg, #0d1f0d 0%, #1a3d1a 55%, #0d2d0d 100%);
+  --app-bg: radial-gradient(ellipse at 80% 20%, #2d5a27 0%, transparent 55%),
+            radial-gradient(circle at 15% 85%, #143614 0%, transparent 50%),
+            linear-gradient(155deg, #0a1f0a 0%, #143514 50%, #081808 100%);
   --board-cell-a: #1a3a1a;
   --board-cell-b: #162e16;
   --board-border: #2a5a2a;
@@ -180,7 +192,9 @@
    THEME: lava
    ============================================================ */
 [data-theme='lava'] {
-  --app-bg: linear-gradient(145deg, #1a0000 0%, #3d0000 50%, #660000 100%);
+  --app-bg: radial-gradient(ellipse at 80% 15%, #b22222 0%, transparent 55%),
+            radial-gradient(circle at 15% 85%, #ff4500 0%, transparent 50%),
+            linear-gradient(155deg, #240000 0%, #4a0000 50%, #1a0000 100%);
   --board-cell-a: #3d1c00;
   --board-cell-b: #2d1500;
   --board-border: #6b2a00;
@@ -204,7 +218,9 @@
    THEME: ice
    ============================================================ */
 [data-theme='ice'] {
-  --app-bg: linear-gradient(145deg, #e8f4f8 0%, #d0eaf5 50%, #b0d8f0 100%);
+  --app-bg: radial-gradient(ellipse at 85% 20%, #81d4fa 0%, transparent 55%),
+            radial-gradient(circle at 15% 85%, #b3e5fc 0%, transparent 50%),
+            linear-gradient(155deg, #e1f5fe 0%, #c4e0e5 50%, #e0f2f1 100%);
   --board-cell-a: #d0e8f0;
   --board-cell-b: #c0dce8;
   --board-border: #90c8e0;

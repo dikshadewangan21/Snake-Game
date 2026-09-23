@@ -1,5 +1,5 @@
 /* ============================================================
-   App.css — Root App Container, Ambient Glow, Layout, Toasts
+   App.css — Root App Container, Dynamic Background, Layout, Toasts
    ============================================================ */
 
 /* ── App Container ────────────────────────────────────────── */
@@ -13,40 +13,196 @@
   overflow-x: hidden;
   position: relative;
   background: var(--app-bg);
-  transition: background 0.5s ease;
+  transition: background 0.6s ease;
 }
 
-/* ── Ambient Glow Blobs ───────────────────────────────────── */
-.ambient-glow {
+/* ============================================================
+   DYNAMIC GAME BACKGROUND SYSTEM
+   ============================================================ */
+.game-bg-root {
   position: fixed;
-  border-radius: 50%;
+  inset: 0;
   pointer-events: none;
   z-index: 0;
-  filter: blur(70px);
+  overflow: hidden;
+}
+
+/* 1. Dynamic Animated Gradient Mesh Layer */
+.bg-gradient-mesh {
+  position: absolute;
+  inset: -25%;
+  background: radial-gradient(circle at 20% 25%, color-mix(in srgb, var(--accent) 32%, transparent) 0%, transparent 45%),
+              radial-gradient(circle at 80% 75%, color-mix(in srgb, var(--accent2) 28%, transparent) 0%, transparent 45%),
+              radial-gradient(circle at 75% 20%, rgba(147, 51, 234, 0.22) 0%, transparent 50%),
+              radial-gradient(circle at 25% 85%, rgba(6, 182, 212, 0.22) 0%, transparent 45%);
+  background-size: 150% 150%;
+  animation: bgMeshFloat 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes bgMeshFloat {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-3%, -2%, 0) scale(1.05) rotate(1deg);
+  }
+  100% {
+    transform: translate3d(2%, 3%, 0) scale(1.02) rotate(-1.5deg);
+  }
+}
+
+/* 2. Soft Drifting Ambient Light Orbs */
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(85px);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.bg-orb-1 {
+  width: min(55vw, 420px);
+  height: min(55vw, 420px);
+  top: -8%;
+  left: -8%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 45%, #9333ea) 0%, transparent 70%);
+  opacity: 0.42;
+  animation: orbDrift1 18s ease-in-out infinite alternate;
+}
+
+.bg-orb-2 {
+  width: min(60vw, 460px);
+  height: min(60vw, 460px);
+  bottom: -10%;
+  right: -8%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent2) 45%, #06b6d4) 0%, transparent 70%);
+  opacity: 0.38;
+  animation: orbDrift2 24s ease-in-out infinite alternate;
+}
+
+.bg-orb-3 {
+  width: min(45vw, 340px);
+  height: min(45vw, 340px);
+  top: 15%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.35) 0%, transparent 70%);
   opacity: 0.28;
-  transition: background 0.5s ease, opacity 0.5s ease;
+  animation: orbDrift1 20s ease-in-out infinite alternate-reverse;
 }
 
-.ambient-glow-1 {
-  width: 340px;
-  height: 340px;
-  top: -80px;
-  left: -80px;
-  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  animation: floatBob 9s ease-in-out infinite;
+.bg-orb-4 {
+  width: min(48vw, 360px);
+  height: min(48vw, 360px);
+  bottom: 12%;
+  left: -6%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, transparent 70%);
+  opacity: 0.30;
+  animation: orbDrift2 26s ease-in-out infinite alternate-reverse;
 }
 
-.ambient-glow-2 {
-  width: 280px;
-  height: 280px;
-  bottom: 60px;
-  right: -60px;
-  background: radial-gradient(circle, var(--accent2) 0%, transparent 70%);
-  animation: floatBob 11s ease-in-out infinite reverse;
-  opacity: 0.22;
+@keyframes orbDrift1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(40px, 30px, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-20px, 50px, 0) scale(0.95);
+  }
 }
 
-/* ── Game Layout ──────────────────────────────────────────── */
+@keyframes orbDrift2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-35px, -40px, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(25px, -20px, 0) scale(0.92);
+  }
+}
+
+/* 3. Subtle Polka-Dot / Micro-Pattern Grid Overlay */
+.bg-pattern-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+  background-position: 0 0;
+  opacity: 0.45;
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+/* 4. Floating Decorative Game Particles */
+.bg-particles-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.bg-particle {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.65);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 70%, white);
+  animation: particleFloatSway ease-in-out infinite alternate;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.bg-particle-bubble {
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.22), transparent 70%);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.15) inset;
+}
+
+.bg-particle-diamond {
+  color: color-mix(in srgb, var(--accent2) 80%, white);
+}
+
+.bg-particle-star {
+  color: rgba(255, 225, 120, 0.7);
+  text-shadow: 0 0 10px rgba(255, 225, 120, 0.6);
+}
+
+.bg-particle-sparkle {
+  color: color-mix(in srgb, var(--accent) 80%, white);
+}
+
+.bg-particle-cross {
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 300;
+}
+
+@keyframes particleFloatSway {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate3d(14px, -24px, 0) rotate(12deg) scale(1.06);
+  }
+  100% {
+    transform: translate3d(-10px, -48px, 0) rotate(-10deg) scale(0.95);
+  }
+}
+
+/* 5. Center Contrast Vignette (Protects game board & HUD visibility) */
+.bg-center-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.25) 100%);
+  pointer-events: none;
+}
+
+/* ── Layout & UI (Preserved exactly as is) ─────────────────── */
 .game-layout {
   display: flex;
   flex-direction: column;
@@ -59,7 +215,7 @@
   z-index: 10;
 }
 
-/* ── Achievement Toast ────────────────────────────────────── */
+/* ── Achievement Toast (Preserved) ────────────────────────── */
 .achievement-toast {
   position: fixed;
   top: 20px;
@@ -118,4 +274,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* ── Reduced Motion Support ───────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .bg-gradient-mesh,
+  .bg-orb,
+  .bg-particle {
+    animation: none !important;
+  }
 }
